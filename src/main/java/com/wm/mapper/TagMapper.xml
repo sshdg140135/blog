@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wm.mapper.TagMapper">
+    <select id="findAllTag" resultType="com.wm.po.Tag">
+        select
+        id, name
+        from t_tag
+        order by id DESC
+    </select>
+
+    <select id="findById" parameterType="java.lang.Long" resultType="com.wm.po.Tag">
+        select
+        id, name
+        from t_tag
+        where id=#{id}
+    </select>
+
+    <insert id="insertTag" parameterType="com.wm.po.Tag" >
+        insert into t_tag
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="name != null">
+                name,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="name != null">
+                #{name,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateById" parameterType="com.wm.po.Tag">
+        update t_tag
+        set name=#{name}
+        where id=#{id}
+    </update>
+
+    <delete id="deleteById" parameterType="java.lang.Long">
+        delete from t_tag
+        where id = #{id}
+    </delete>
+</mapper>

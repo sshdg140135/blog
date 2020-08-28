@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wm.mapper.BlogMapper">
+    
+    <resultMap id="listBlog" type="com.wm.vo.BlogList">
+        <id property="id" column="id"/>
+        <result property="title" column="title"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="recommend" column="recommend"/>
+        <result property="published" column="published"/>
+        <result property="typeId" column="type_id"/>
+        <association property="type" javaType="com.wm.po.Type">
+            <id property="id" column="id"/>
+            <result property="name" column="name"/>
+        </association>
+    </resultMap>
+    
+    <select id="findAllBlogList" resultMap="listBlog">
+        select b.id,b.title,b.update_time,b.recommend,b.published,b.type_id,t.id,t.name
+        from t_blog b
+        left outer
+        join t_type t
+        on b.type_id = t.id
+        order by b.update_time desc
+    </select>
+
+    <insert id="insertBlog" parameterType="com.wm.po.Blog">
+        insert into t_blog (id,title, content, first_picture, flag,
+        views, appreciation, share_statement, commentabled, published,
+        recommend, create_time, update_time, type_id, user_id, description)
+        values (#{id},#{title},#{content},#{firstPicture},#{flag},#{views},#{appreciation},
+        #{shareStatement},#{commentabled},#{published},#{recommend},#{createTime},
+        #{updateTime},#{type.id},#{user.id},#{description});
+    </insert>
+
+    <resultMap id="blog" type="com.wm.po.Blog">
+        <id property="id" column="id"/>
+        <result property="title" column="title"/>
+        <result property="content" column="content"/>
+        <result property="firstPicture" column="firstPicture"/>
+        <result property="flag" column="flag"/>
+        <result property="views" column="views"/>
+        <result property="appreciation" column="appreciation"/>
+        <result property="shareStatement" column="shareStatement"/>
+        <result property="commentabled" column="commentabled"/>
+        <result property="published" column="published"/>
+        <result property="recommend" column="recommend"/>
+        <result property="createTime" column="createTime"/>
+        <result property="updateTime" column="update_time"/>
+
+        <result property="description" column="description"/>
+        <association property="type" javaType="com.wm.po.Type">
+            <id property="id" column="id1"/>
+            <result property="name" column="name"/>
+        </association>
+        <association property="user" javaType="com.wm.po.User">
+            <id property="id" column="id2"/>
+            <result property="avatar" column="avatar"/>
+            <result property="email" column="email"/>
+            <result property="nickname" column="nickname"/>
+        </association>
+    </resultMap>
+
+
+
+    <select id="findById" resultMap="blog" parameterType="java.lang.Long">
+        select *,t.id as id1, u.id as id2
+        from t_blog b
+        left outer
+        join t_type t
+        on b.type_id = t.id
+		join t_user u
+		on b.user_id=u.id
+        where b.id=#{id};
+    </select>
+
+    <update id="updateBlog" parameterType="com.wm.po.Blog">
+        update t_Blog
+        <set>
+            <if test="title != null">
+                title=#{title},
+            </if>
+            <if test="content != null">
+                content=#{content},
+            </if>
+            <if test="flag != null">
+                flag=#{flag},
+            </if>
+            <if test="appreciation != null">
+                appreciation=#{appreciation},
+            </if>
+            <if test="shareStatement != null">
+                share_statement=#{shareStatement},
+            </if>
+            <if test="commentabled != null">
+                commentabled=#{commentabled},
+            </if>
+            <if test="published != null">
+                published=#{published},
+            </if>
+            <if test="recommend != null">
+                recommend=#{recommend},
+            </if>
+            <if test="updateTime != null">
+                update_time=#{updateTime},
+            </if>
+            <if test="type.id != null">
+                type_id=#{type.id},
+            </if>
+            <if test="description != null">
+                description=#{description}
+            </if>
+        </set>
+        where id=#{id}
+    </update>
+
+
+
+    <delete id="deleteById" parameterType="java.lang.Long">
+        delete from t_blog
+        where id = #{id}
+    </delete>
+    
+    <select id="findAllBlog" resultMap="blog">
+        select *,t.id as id1, u.id as id2
+        from t_blog b
+        left outer
+        join t_type t
+        on b.type_id = t.id
+		join t_user u
+		on b.user_id=u.id
+		ORDER BY b.create_time DESC
+    </select>
+</mapper>

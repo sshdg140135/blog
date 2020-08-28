@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wm.mapper.TypeMapper">
+
+    <resultMap id="type" type="com.wm.po.Type">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <association property="blogs" javaType="com.wm.po.Blog">
+            <id property="id" column="id1"/>
+            <result property="title" column="title"/>
+            <result property="content" column="content"/>
+            <result property="firstPicture" column="firstPicture"/>
+            <result property="flag" column="flag"/>
+            <result property="views" column="views"/>
+            <result property="appreciation" column="appreciation"/>
+            <result property="shareStatement" column="shareStatement"/>
+            <result property="commentabled" column="commentabled"/>
+            <result property="published" column="published"/>
+            <result property="recommend" column="recommend"/>
+            <result property="createTime" column="createTime"/>
+            <result property="updateTime" column="update_time"/>
+            <result property="description" column="description"/>
+            <association property="type" javaType="com.wm.po.Type">
+                <id property="id" column="type_id"/>
+            </association>
+            <association property="user" javaType="com.wm.po.User">
+                <id property="id" column="id2"/>
+                <result property="avatar" column="avatar"/>
+                <result property="email" column="email"/>
+                <result property="nickname" column="nickname"/>
+            </association>
+        </association>
+    </resultMap>
+
+
+    <select id="findAllType" resultMap="type">
+        select *, b.id as id1, u.id as id2
+        from t_type t
+        LEFT JOIN t_blog b
+        on b.type_id = t.id
+        LEFT JOIN t_user u
+        ON b.user_id=u.id
+    </select>
+
+    <select id="findById" parameterType="java.lang.Long" resultType="com.wm.po.Type">
+        select
+        id, name
+        from t_type
+        where id=#{id}
+    </select>
+
+    <insert id="insertType" parameterType="com.wm.po.Type" >
+        insert into t_type
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="name != null">
+                name,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="name != null">
+                #{name,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateById" parameterType="com.wm.po.Type">
+        update t_type
+        set name=#{name}
+        where id=#{id}
+    </update>
+
+    <delete id="deleteById" parameterType="java.lang.Long">
+        delete from t_type
+        where id = #{id}
+    </delete>
+
+</mapper>
