@@ -58,7 +58,6 @@ public class IndexController {
                          String query, Model model){
         PageHelper.startPage(pageNum, 2);
         List<Blog> blogs = blogService.searchByTitle(query);
-        System.out.println(blogs);
         PageInfo<Blog> pageInfo = new PageInfo<>(blogs);
         model.addAttribute("pageInfo", pageInfo);
         model.addAttribute("query", query);

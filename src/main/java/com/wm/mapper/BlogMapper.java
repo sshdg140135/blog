@@ -2,6 +2,7 @@ package com.wm.mapper;
 
 import com.wm.po.Blog;
 import com.wm.po.Tag;
+import com.wm.po.Type;
 import com.wm.vo.BlogList;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -13,6 +14,7 @@ public interface BlogMapper {
     List<Blog> findAllBlog();
     List<Blog> findPublishedBlog();
     Blog findById(Long id);
+    List<Blog> findByType(Long id);
     List<Blog> searchByTitle(String title);
 
     Integer insertBlog(Blog blog);

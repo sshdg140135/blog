@@ -11,7 +11,7 @@
 <body>
 
   <!--导航-->
-  <nav th:replace="_fragments :: menu(1)" class="ui inverted attached segment m-padded-tb-mini m-shadow-small" >
+  <nav th:replace="_fragments :: menu(2)" class="ui inverted attached segment m-padded-tb-mini m-shadow-small" >
     <div class="ui container">
       <div class="ui inverted secondary stackable menu">
         <h2 class="ui teal header item">MyBlog</h2>
@@ -50,18 +50,18 @@
 
       <div class="ui attached segment m-padded-tb-large">
         <div class="ui labeled button m-margin-tb-tiny" th:each="type : ${types}">
-          <a href="#" th:href="@{/types/{id}(id=${type.id})}" class="ui basic  button" th:classappend="${type.id==activeTypeId} ? 'teal'" th:text="${type.name}">思考与感悟</a>
+          <a href="#" th:href="@{/types(id=${type.id})}" class="ui basic  button" th:classappend="${type.id==activeTypeId} ? 'teal'" th:text="${type.name}">思考与感悟</a>
           <div class="ui basic  left pointing label" th:classappend="${type.id==activeTypeId} ? 'teal'" th:text="${#arrays.length(type.blogs)}">24</div>
         </div>
       </div>
 
       <div class="ui top attached teal segment">
-        <div class="ui padded vertical segment m-padded-tb-large" th:each="blog : ${page.content}">
+        <div class="ui padded vertical segment m-padded-tb-large" th:each="blog : ${blogs}">
           <div class="ui middle aligned mobile reversed stackable grid" >
 
             <div class="two"></div>
             <div class="fourteen wide column">
-              <h3 class="ui header" ><a href="#" th:href="@{/blog/{id}(id=${blog.id})}" target="_blank" class="m-black" th:text="${blog.title}">你真的理解什么是财富自由吗?</a></h3>
+              <h3 class="ui header" ><a href="#" th:href="@{/blog(id=${blog.id})}" target="_blank" class="m-black" th:text="${blog.title}">你真的理解什么是财富自由吗?</a></h3>
               <p class="m-text" th:text="|${blog.description}......|">正确做好任何一件事情的前提是清晰、正确的理解目标。而事实是，我们很多人很多时候根本没有对目标正确的定义，甚至根本从来就没有想过，只是大家都那么做而已…...</p>
               <div class="ui grid">
                 <div class="eleven wide column">
@@ -86,19 +86,6 @@
           </div>
         </div>
       </div>
-
-      <!--footer-->
-      <div class="ui bottom attached segment" th:if="${page.totalPages}>1">
-        <div class="ui middle aligned two column grid">
-          <div class="column">
-            <a href="#" th:href="@{'/types/'+${activeTypeId}(page=${page.number}-1)}"  th:unless="${page.first}" class="ui mini teal basic button">上一页</a>
-          </div>
-          <div class="right aligned column">
-            <a href="#" th:href="@{'/types/'+${activeTypeId}(page=${page.number}+1)}"  th:unless="${page.last}" class="ui mini teal basic button">下一页</a>
-          </div>
-        </div>
-      </div>
-
     </div>
   </div>
 

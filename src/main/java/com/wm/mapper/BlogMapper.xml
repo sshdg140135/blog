@@ -164,5 +164,16 @@
         AND published=1
         ORDER BY b.create_time DESC
     </select>
-
+    <select id="findByType" parameterType="java.lang.Long" resultMap="blog">
+        select b.* ,t.id as id1,t.name, u.id as id2,u.avatar,u.nickname, u.email
+        FROM t_blog b
+        left outer
+        join t_type t
+        on b.type_id = t.id
+		join t_user u
+		on b.user_id=u.id
+		WHERE type_id=#{id}
+		AND published=1
+        ORDER BY b.create_time DESC
+    </select>
 </mapper>

@@ -10,6 +10,7 @@ public interface BlogService {
     List<BlogList> findAllBlogList();
     List<Blog> findAllBlog();
     List<Blog> findPublishedBlog();
+    List<Blog> findByType(Long id);
     List<Blog> searchByTitle(String title);
 
     Integer addBlog(Blog blog);
