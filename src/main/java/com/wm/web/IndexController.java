@@ -34,7 +34,7 @@ public class IndexController {
                             Model model){
         //查询全部博客、分类、推荐...并传递到前台
         PageHelper.startPage(pageNum, 2);
-        List<Blog> blogs = blogService.findAllBlog();
+        List<Blog> blogs = blogService.findPublishedBlog();
         PageInfo<Blog> pageInfo = new PageInfo<>(blogs);
 
         List<Type> types = typeService.findAllTypes();
@@ -47,10 +47,22 @@ public class IndexController {
     @GetMapping("/blog")
     public String blogPage(Long id, Model model){
         Blog blog = blogService.blogDetails(id);
-//        blog.setViews(blog.getViews()+1);
-
+        blog.setViews(blog.getViews()+1);
+        Integer i = blogService.updateViews(blog);
         model.addAttribute("blog", blog);
         return "blog";
+    }
+
+    @GetMapping("/search")
+    public String search(@RequestParam(defaultValue="1",value="pageNum") Integer pageNum,
+                         String query, Model model){
+        PageHelper.startPage(pageNum, 2);
+        List<Blog> blogs = blogService.searchByTitle(query);
+        System.out.println(blogs);
+        PageInfo<Blog> pageInfo = new PageInfo<>(blogs);
+        model.addAttribute("pageInfo", pageInfo);
+        model.addAttribute("query", query);
+        return "search";
     }
 
 }

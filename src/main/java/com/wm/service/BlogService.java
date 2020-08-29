@@ -9,6 +9,8 @@ public interface BlogService {
 
     List<BlogList> findAllBlogList();
     List<Blog> findAllBlog();
+    List<Blog> findPublishedBlog();
+    List<Blog> searchByTitle(String title);
 
     Integer addBlog(Blog blog);
 
@@ -16,6 +18,8 @@ public interface BlogService {
     Blog blogDetails(Long id);
 
     Integer updateById(Blog blog);
+    Integer updateViews(Blog blog);
+
     Integer deleteById(Long id);
 
 }

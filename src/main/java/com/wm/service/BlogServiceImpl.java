@@ -27,6 +27,17 @@ public class BlogServiceImpl implements BlogService {
     }
 
     @Override
+    public List<Blog> findPublishedBlog() {
+        return blogMapper.findPublishedBlog();
+    }
+
+    @Override
+    public List<Blog> searchByTitle(String title) {
+        return blogMapper.searchByTitle(title);
+    }
+
+
+    @Override
     public Integer addBlog(Blog blog) {
         return blogMapper.insertBlog(blog);
     }
@@ -51,6 +62,12 @@ public class BlogServiceImpl implements BlogService {
     @Override
     public Integer updateById(Blog blog) {
         return blogMapper.updateBlog(blog);
+    }
+
+    @Override
+    public Integer updateViews(Blog blog) {
+
+        return blogMapper.updateViews(blog);
     }
 
     @Override

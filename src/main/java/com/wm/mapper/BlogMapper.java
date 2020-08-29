@@ -11,10 +11,14 @@ public interface BlogMapper {
 
     List<BlogList> findAllBlogList();
     List<Blog> findAllBlog();
-    Integer insertBlog(Blog blog);
+    List<Blog> findPublishedBlog();
     Blog findById(Long id);
+    List<Blog> searchByTitle(String title);
+
+    Integer insertBlog(Blog blog);
 
     Integer updateBlog(Blog blog);
+    Integer updateViews(Blog blog);
 
     Integer deleteById(Long id);
 }

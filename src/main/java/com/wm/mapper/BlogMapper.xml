@@ -66,7 +66,7 @@
 
 
     <select id="findById" resultMap="blog" parameterType="java.lang.Long">
-        select *,t.id as id1, u.id as id2
+        select b.* ,t.id as id1,t.name, u.id as id2,u.avatar,u.nickname, u.email
         from t_blog b
         left outer
         join t_type t
@@ -110,13 +110,20 @@
                 type_id=#{type.id},
             </if>
             <if test="description != null">
-                description=#{description}
+                description=#{description},
+            </if>
+            <if test="views != null">
+                views=#{views}
             </if>
         </set>
         where id=#{id}
     </update>
 
-
+    <update id="updateViews" parameterType="com.wm.po.Blog">
+        update t_blog
+        set  views=#{views}
+        where id=#{id};
+    </update>
 
     <delete id="deleteById" parameterType="java.lang.Long">
         delete from t_blog
@@ -124,7 +131,7 @@
     </delete>
     
     <select id="findAllBlog" resultMap="blog">
-        select *,t.id as id1, u.id as id2
+        select b.* ,t.id as id1,t.name, u.id as id2,u.avatar,u.nickname, u.email
         from t_blog b
         left outer
         join t_type t
@@ -133,4 +140,29 @@
 		on b.user_id=u.id
 		ORDER BY b.create_time DESC
     </select>
+
+    <select id="findPublishedBlog" resultMap="blog">
+        select b.* ,t.id as id1,t.name, u.id as id2,u.avatar,u.nickname, u.email
+        from t_blog b
+        left outer
+        join t_type t
+        on b.type_id = t.id
+		join t_user u
+		on b.user_id=u.id
+		where published=1
+		ORDER BY b.create_time DESC
+    </select>
+    <select id="searchByTitle" parameterType="java.lang.String" resultMap="blog">
+        select b.* ,t.id as id1,t.name, u.id as id2,u.avatar,u.nickname, u.email
+        FROM t_blog b
+        left outer
+        join t_type t
+        on b.type_id = t.id
+		join t_user u
+		on b.user_id=u.id
+        WHERE title LIKE "%" #{title} "%"
+        AND published=1
+        ORDER BY b.create_time DESC
+    </select>
+
 </mapper>

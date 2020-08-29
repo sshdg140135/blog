@@ -41,7 +41,7 @@
             <h3 class="ui teal header">搜索结果</h3>
           </div>
           <div class="right aligned column">
-            共 <h2 class="ui orange header m-inline-block m-text-thin" th:text="${page.totalElements}"> 14 </h2> 个
+            共 <h2 class="ui orange header m-inline-block m-text-thin" th:text="${pageInfo.total}"> 14 </h2> 个
           </div>
         </div>
       </div>
@@ -49,12 +49,12 @@
 
       <!--一条博客的面板-->
       <div class="ui top attached teal segment">
-        <div class="ui padded vertical segment m-padded-tb-large" th:each="blog : ${page.content}">
+        <div class="ui padded vertical segment m-padded-tb-large" th:each="blog : ${pageInfo.list}">
           <div class="ui middle aligned mobile reversed stackable grid" >
             <div class="two"></div>
             <div class="fourteen wide column">
               <!--标题-->
-              <h3 class="ui header" ><a href="#" th:href="@{/blog/{id}(id=${blog.id})}" target="_blank" class="m-black" th:text="${blog.title}">Vue Element Ui + Springboot前后端分离 CRUD(增删查改)、分页查询 Demo</a></h3>
+              <h3 class="ui header" ><a href="#" th:href="@{/blog(id=${blog.id})}" target="_blank" class="m-black" th:text="${blog.title}">Vue Element Ui + Springboot前后端分离 CRUD(增删查改)、分页查询 Demo</a></h3>
               <!--摘要-->
               <p class="m-text" th:text="|${blog.description}......|">最近两天刚刚学习完Springboot，决定做一个demo整合一下学习到的知识。由于前端所知甚少，所以前端会有一些小bug，但总的来说不影响功能。</p>
               <!--摘要下的item排版-->
@@ -87,13 +87,13 @@
       </div>
 
       <!--footer-->
-      <div class="ui bottom attached segment" th:if="${page.totalPages}>1">
+      <div class="ui bottom attached segment" th:if="${pageInfo.pages}>1">
         <div class="ui middle aligned two column grid">
           <div class="column">
-            <a href="#" th:href="@{/(page=${page.number}-1)}"  th:unless="${page.first}" class="ui mini teal basic button">上一页</a>
+            <a href="#" th:href="@{/search(pageNum=${pageInfo.prePage},query=${query})}"  th:if="${pageInfo.hasPreviousPage}" class="ui mini teal basic button">上一页</a>
           </div>
           <div class="right aligned column">
-            <a href="#" th:href="@{/(page=${page.number}+1)}"  th:unless="${page.last}" class="ui mini teal basic button">下一页</a>
+            <a href="#" th:href="@{/search(pageNum=${pageInfo.nextPage},query=${query})}"  th:if="${pageInfo.hasNextPage}" class="ui mini teal basic button">下一页</a>
           </div>
         </div>
       </div>
