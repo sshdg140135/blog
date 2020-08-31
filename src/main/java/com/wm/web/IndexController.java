@@ -4,8 +4,10 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.wm.NotFoundException;
 import com.wm.po.Blog;
+import com.wm.po.Comment;
 import com.wm.po.Type;
 import com.wm.service.BlogService;
+import com.wm.service.CommentService;
 import com.wm.service.TagService;
 import com.wm.service.TypeService;
 import com.wm.vo.BlogList;
@@ -28,6 +30,8 @@ public class IndexController {
     TypeService typeService;
     @Autowired
     TagService tagService;
+    @Autowired
+    CommentService commentService;
 
     @GetMapping("/")
     public String indexPage(@RequestParam(defaultValue="1",value="pageNum") Integer pageNum,
@@ -46,10 +50,12 @@ public class IndexController {
 
     @GetMapping("/blog")
     public String blogPage(Long id, Model model){
+        List<Comment> comments = commentService.findListByBlogId(id);
         Blog blog = blogService.blogDetails(id);
         blog.setViews(blog.getViews()+1);
         Integer i = blogService.updateViews(blog);
         model.addAttribute("blog", blog);
+        model.addAttribute("comments", comments);
         return "blog";
     }
 

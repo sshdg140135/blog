@@ -18,10 +18,15 @@ public class LoginController {
     @Autowired
     private UserService userService;
 
-    @GetMapping
+    @GetMapping("/login")
     public String loginPage(){
         return "admin/login";
     }
+    @GetMapping
+    public String loginPage2(){
+        return "admin/login";
+    }
+
 
     @PostMapping("/login")
     public String login(User user, HttpSession session,

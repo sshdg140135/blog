@@ -466,6 +466,7 @@ h5,h6{font-size:1em;}
           </div>
         </div>
       </div>
+
       <!--留言区域列表-->
       <div  class="ui bottom attached segment" th:if="${blog.commentabled}">
         <!--评论列表-->
@@ -481,7 +482,7 @@ h5,h6{font-size:1em;}
                 </a>
                 <!--楼主评论-->
                 <div class="content">
-                  <!--评论id-->
+                  <!--评论昵称-->
                   <a class="author" >
                     <span th:text="${comment.nickname}">Matt</span>
                     <div class="ui mini basic teal left pointing label m-padded-mini" th:if="${comment.adminComment}">博主</div>
@@ -779,7 +780,7 @@ h5,h6{font-size:1em;}
     });
 
     $(function () {
-      $("#comment-container").load(/*[[@{/comments/{id}(id=${blog.id})}]]*/"comments/6");
+      $("#comment-container").load(/*[[@{/comments(blogId=${blog.id})}]]*/"comments/6");
     });
 
 

@@ -35,6 +35,15 @@
         #{updateTime},#{type.id},#{user.id},#{description});
     </insert>
 
+    <sql id="Blog_Column">
+        b.* ,
+        t.id as id1, t.name,
+        u.id as id2, u.avatar, u.nickname, u.email,
+        c.id as id3, c.avatar as avatar1, c.content as content1,
+        c.create_time as create_time1, c.email as email1,
+        c.nickname as nickname1, c.blog_id, c.parent_comment_id
+    </sql>
+
     <resultMap id="blog" type="com.wm.po.Blog">
         <id property="id" column="id"/>
         <result property="title" column="title"/>
@@ -61,18 +70,32 @@
             <result property="email" column="email"/>
             <result property="nickname" column="nickname"/>
         </association>
+        <association property="comments" javaType="com.wm.po.Comment">
+            <id property="id" column="id3"/>
+            <result property="avatar" column="avatar1"/>
+            <result property="content" column="content1"/>
+            <result property="createTime" column="create_time1"/>
+            <result property="email" column="email1"/>
+            <result property="nickname" column="nickname1"/>
+            <result property="isAdminComment" column="is_admin_comment"/>
+            <association property="parentComment" javaType="com.wm.po.Comment">
+                <id property="id" column="parent_comment_id"/>
+            </association>
+        </association>
     </resultMap>
 
 
 
     <select id="findById" resultMap="blog" parameterType="java.lang.Long">
-        select b.* ,t.id as id1,t.name, u.id as id2,u.avatar,u.nickname, u.email
+        select
+        <include refid="Blog_Column"></include>
         from t_blog b
-        left outer
-        join t_type t
+        left join t_type t
         on b.type_id = t.id
-		join t_user u
-		on b.user_id=u.id
+        left join t_user u
+        on b.user_id=u.id
+        left JOIN t_comment c
+        ON c.blog_id = b.id
         where b.id=#{id};
     </select>
 

@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wm.mapper.CommentMapper">
+
+    <resultMap id="comment" type="com.wm.po.Comment">
+        <id property="id" column="id"/>
+        <result property="nickname" column="nickname"/>
+        <result property="email" column="email"/>
+        <result property="content" column="content"/>
+        <result property="avatar" column="avatar"/>
+        <result property="createTime" column="create_time"/>
+        <result property="adminComment" column="admin_comment"/>
+        <association property="blog" javaType="com.wm.po.Blog">
+            <id property="id" column="blog_id"/>
+        </association>
+        <association property="parentComment" javaType="com.wm.po.Comment">
+        <id property="id" column="parent_comment_id"/>
+    </association>
+    </resultMap>
+    <sql id="Comment_Column">
+        c.id , c.avatar , c.content ,
+        c.create_time  , c.email ,
+        c.nickname, c.blog_id, c.parent_comment_id,
+        c.admin_comment
+    </sql>
+
+    <sql id="commentShow">
+        c.id , c.avatar , c.content ,
+        c.create_time  , c.email ,
+        c.nickname, c.blog_id, c.parent_comment_id,
+        c2.id as id1 , c2.avatar as avatar1  , c2.content as content1,
+        c2.create_time as create_time1   , c2.email as email1 ,
+        c2.nickname as nickname1, c2.blog_id blog_id1, c2.parent_comment_id as parent_comment_id1
+    </sql>
+
+    <insert id="insertComment" parameterType="com.wm.po.Comment">
+        insert t_comment
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="avatar != null">
+                avatar,
+            </if>
+            <if test="content != null">
+                content,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="email != null">
+                email,
+            </if>
+            <if test="nickname != null">
+                nickname,
+            </if>
+            <if test="blog != null">
+                blog_id,
+            </if>
+            <if test="parentComment != null">
+                parent_comment_id,
+            </if>
+            <if test="adminComment != null">
+                admin_comment
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id},
+            </if>
+            <if test="avatar != null">
+                #{avatar},
+            </if>
+            <if test="content != null">
+                #{content},
+            </if>
+            <if test="createTime != null">
+                #{createTime},
+            </if>
+            <if test="email != null">
+                #{email},
+            </if>
+            <if test="nickname != null">
+                #{nickname},
+            </if>
+            <if test="blog != null">
+                #{blog.id},
+            </if>
+            <if test="parentComment != null">
+                #{parentComment.id},
+            </if>
+            <if test="adminComment != null">
+                #{adminComment}
+            </if>
+        </trim>
+    </insert>
+
+    <select id="findByBlogId" resultMap="comment" parameterType="java.lang.Long">
+        select <include refid="Comment_Column"></include>
+        from t_comment c
+        where blog_id=#{blogId}
+    </select>
+
+    <select id="findByBlogIdAndParentIdNull" resultMap="comment" parameterType="java.lang.Long">
+        select <include refid="Comment_Column"></include>
+        from t_comment c
+        where blog_id=#{blogId}
+        and c.parent_comment_id is NULL
+    </select>
+
+    <select id="findByBlogIdAndParentIdNotNull" resultMap="comment">
+        select <include refid="Comment_Column"></include>
+        from t_comment c
+        where blog_id=#{blogId}
+        and c.parent_comment_id=#{parentId}
+    </select>
+
+    <select id="findById" resultMap="comment" parameterType="java.lang.Long">
+        select <include refid="Comment_Column"></include>
+        from t_comment c
+        where id=#{id}
+    </select>
+
+</mapper>
