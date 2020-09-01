@@ -8,7 +8,10 @@ import com.wm.vo.BlogList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+
 @Service
 public class BlogServiceImpl implements BlogService {
 
@@ -39,6 +42,22 @@ public class BlogServiceImpl implements BlogService {
     @Override
     public List<Blog> searchByTitle(String title) {
         return blogMapper.searchByTitle(title);
+    }
+
+    @Override
+    public Map<String, List<Blog>> findArchives() {
+        List<String> years = blogMapper.findYear();
+        Map<String, List<Blog>> map = new LinkedHashMap<>();
+        for (String year : years) {
+            List<Blog> blogs = blogMapper.findByYear(year);
+            map.put(year, blogs);
+        }
+        return map;
+    }
+
+    @Override
+    public Integer findBlogCount() {
+        return blogMapper.findBlogCount();
     }
 
 

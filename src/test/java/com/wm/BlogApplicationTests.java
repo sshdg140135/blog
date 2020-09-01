@@ -12,26 +12,31 @@ import com.wm.service.CommentService;
 import com.wm.service.TypeService;
 import com.wm.util.MarkdownUtils;
 import com.wm.vo.BlogList;
+import net.bytebuddy.asm.Advice;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @SpringBootTest
 class BlogApplicationTests {
     @Autowired
     BlogService blogService;
     @Autowired
+    BlogMapper blogMapper;
+    @Autowired
     CommentService commentService;
 
     @Test
     void contextLoads() {
-        List<Comment> comments = commentService.findListByBlogId((long) 5);
-        for (Comment comment : comments) {
-            System.out.println(comment);
+        List<String> years = blogMapper.findYear();
+        Map<String, List<Blog>> map = new LinkedHashMap<>();
+        for (String year : years) {
+            map.put(year, blogMapper.findByYear(year));
         }
+        System.out.println(map);
+
     }
 
 }

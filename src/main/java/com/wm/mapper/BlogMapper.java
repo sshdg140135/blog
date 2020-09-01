@@ -16,7 +16,9 @@ public interface BlogMapper {
     Blog findById(Long id);
     List<Blog> findByType(Long id);
     List<Blog> searchByTitle(String title);
-
+    List<String> findYear();
+    List<Blog> findByYear(String year);
+    Integer findBlogCount();
     Integer insertBlog(Blog blog);
 
     Integer updateBlog(Blog blog);

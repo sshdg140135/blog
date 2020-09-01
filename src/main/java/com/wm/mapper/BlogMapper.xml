@@ -199,4 +199,28 @@
 		AND published=1
         ORDER BY b.create_time DESC
     </select>
+    <select id="findYear" resultType="java.lang.String">
+        SELECT DATE_FORMAT(b.create_time,'%Y') as year
+        FROM t_blog b
+        GROUP BY year
+        ORDER BY year DESC
+    </select>
+
+    <resultMap id="archiveBlog" type="com.wm.po.Blog">
+        <id property="id" column="id"/>
+        <result property="title" column="title"/>
+        <result property="createTime" column="create_time"/>
+        <result property="flag" column="flag"/>
+    </resultMap>
+
+    <select id="findByYear" parameterType="java.lang.String" resultMap="archiveBlog">
+        SELECT b.id, b.title, b.create_time, b.flag
+        FROM t_blog b
+        WHERE DATE_FORMAT(b.create_time,'%Y')=#{year}
+        ORDER BY b.create_time DESC
+    </select>
+    <select id="findBlogCount" resultType="java.lang.Integer">
+        select count(id)
+        from  t_blog
+    </select>
 </mapper>

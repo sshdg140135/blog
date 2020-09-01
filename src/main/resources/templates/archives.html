@@ -10,7 +10,7 @@
 <body>
 
   <!--导航-->
-  <nav th:replace="_fragments :: menu(5)" class="ui inverted attached segment m-padded-tb-mini m-shadow-small" >
+  <nav th:replace="_fragments :: menu(4)" class="ui inverted attached segment m-padded-tb-mini m-shadow-small" >
     <div class="ui container">
       <div class="ui inverted secondary stackable menu">
         <h2 class="ui teal header item">MyBlog</h2>
@@ -52,10 +52,10 @@
       <h3 class="ui center aligned header" th:text="${item.key}">2020</h3>
       <div class="ui fluid vertical menu">
 
-        <a href="#" th:href="@{/blog/{id}(id=${blog.id})}" target="_blank" class="item" th:each="blog : ${item.value}">
+        <a href="#" th:href="@{/blog(id=${blog.id})}" target="_blank" class="item" th:each="blog : ${item.value}">
           <span>
             <i class="mini teal circle icon"></i><span th:text="${blog.title}">关于刻意练习的清单</span>
-            <div class="ui teal basic left pointing label m-padded-mini " th:text="${#dates.format(blog.updateTime,'MMMdd')}">8月22</div>
+            <div class="ui teal basic left pointing label m-padded-mini " th:text="${#dates.format(blog.createTime,'MMMdd')}">8月22</div>
           </span>
           <div class="ui orange basic left pointing label m-padded-mini " th:text="${blog.flag}">原创</div>
         </a>
