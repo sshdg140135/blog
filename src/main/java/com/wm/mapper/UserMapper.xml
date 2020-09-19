@@ -14,4 +14,10 @@
         where username = #{username,jdbcType=VARCHAR}
         and password = #{password,jdbcType=VARCHAR}
     </select>
+
+    <select id="findByUsername" parameterType="java.lang.String" resultType="com.wm.po.User">
+        select <include refid="Base_Column_List" />
+        from t_user
+        where username = #{username,jdbcType=VARCHAR}
+    </select>
 </mapper>

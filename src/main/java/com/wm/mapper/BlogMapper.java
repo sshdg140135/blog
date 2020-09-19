@@ -1,8 +1,6 @@
 package com.wm.mapper;
 
 import com.wm.po.Blog;
-import com.wm.po.Tag;
-import com.wm.po.Type;
 import com.wm.vo.BlogList;
 import org.apache.ibatis.annotations.Mapper;
 
